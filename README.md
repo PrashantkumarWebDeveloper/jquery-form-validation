@@ -1,4 +1,4 @@
-# jquery-form-validation
+# JQUERY FORM VALIDATION PLUGIN
 This plugin is based on jQuery library and helps in validating html forms. Plugin provides default error messages which can be customised.
 # Validation Library/Plugin Documentation
 
@@ -103,7 +103,7 @@ You can add error element as next element to input or parent of input. Additiona
 Depending upon the requirements, add validation classes in your input element. Following validation classes are available:
 
 - isRequired
-- iSPhone
+- isPhone
 - isInteger
 - isNumber
 - isDecimal

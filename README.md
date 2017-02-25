@@ -13,13 +13,13 @@ Take a look to the following code first:
     	<title>Jquery validation plugin</title>
     </head>
 	<body>
-    	<form id=”myForm” onsubmit=”return app. validateForm()” novalidate=”true”>
+    	<form id=”myForm” onsubmit=”return app.validateForm()” novalidate=”true” >
           <div>
-              <input name=”first_name” class=”isRequired isChar”>
+              <input name=”first_name” class=”isRequired isChar” onblur="app.validateField(this);">
               <span class=”error”></span>
           </div>
           <div>
-              <input name=”last_name” class=”isRequired isChar”>
+              <input name=”last_name” class=”isRequired isChar” onblur="app.validateField(this);">
               <span class=”error”></span>
           </div>
           <button type=”reset” onclick=” app.resetForm()”>Reset</button>
@@ -130,7 +130,7 @@ Example:
 Bind the validation method to input field with events. You need to pass the reference of input field.
 Example:
 ```html
-<input class=”isRequired isPhone” onblur=”app. validateField(this)” >
+<input class=”isRequired isPhone” onblur=”app.validateField(this)” >
 ```
 
 The method “app. validateField(this)” will validate this input field onblur event. If the input field is invalid, it will show error in error element (element with class "error") and in case of valid input it hide and remove error message from error element. Passing “this” is required in order to identify input field by plugin.
@@ -142,7 +142,7 @@ Bind form to validate all fields on submit.
 
 Example:
 ```html
-<form onsubmit=”return app. validateForm()” novalidate=”true”>
+<form onsubmit=”return app.validateForm()” novalidate=”true”>
 	…
 	…
 </form>

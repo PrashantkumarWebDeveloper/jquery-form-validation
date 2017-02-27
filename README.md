@@ -206,8 +206,91 @@ Now you are all set up and ready to fly!!
 ### Adding custom error messages
 (will be updated soon)
 ### Adding custome rules to plugin
-(will be updated soon)
+
+__Method:__ addRule()
+
+__Parameters:__ 
+1. Rule Name (String)
+2. Error Class (String)
+3. Error Message (String/Object)
+4. Callback Function 
+
+__Discription:__
+
+All parameters are required. 
+
+__Rule Name__ is used to create a custome rule with the provided name and used by the plugin. 
+
+__Error Class__ is the class you need to add in your input element. To maintain uniqueness in error class, you should create it by adding "is" prefix in rule name (ex: for rule name "customeRule" use "isCustomeRule" as error class).
+
+__Error Message__ can be String (say Case 1) if you want to show single message in all condition for your custome rule. If you want to show different messages depending upon condition use Object format (say Case 2). 
+Ex: {error_1: "age can not be more than 150",  error_2: "age can not be less then 0"}.
+
+__Callback Function__ contains your logic where you make decision for correct/incorrect input. It has three arguments, which contains: 
+1. Input field reference (ref)
+2. Input field value and (val)
+3. Message Object (msgObj): For Case 2, It can be modified if needed.
 
 
+__Note:__ If parameter "Error Message" is String you need to return true/false in callback function for valid/invalid inputs respectively. 
+And if it is in Object format return an Object in callback function in following format:
 
- 
+For Valid input: {status:true}
+
+For Invalid input: {status:false, type: "error_msg_key_of_message_obj"}
+
+__EXAMPLE (Case 1/Error Message parameter as String):__ 
+
+```javascript
+var app=validationJs("#myform");
+
+//app.addRule(Rule_Name, Error_Class, Error_Message, Callback_function);
+
+app.addRule("customeRule", "isCustomeRule", "Age is invalid (error message from customeRule)", function(ref, val){
+	/*
+    	"ref" contains the input element ref
+        "val" contains the input value
+    */
+	if(val>0 && val<150)
+    	return true;
+    else
+    	return false;
+});
+
+```
+
+
+__EXAMPLE (Case 2/Error Message parameter as Object):__ 
+
+```javascript
+var app=validationJs('#myform');
+
+var errorMsg={
+				error_1: "Age can not be more than 150",  
+                error_2: "Age can not be less then 0"
+            };
+
+//app.addRule(Rule_Name, Error_Class, Error_Message_object, Callback_function);
+
+app.addRule("customeRule", "isCustomeRule", errorMsg, function(ref, val, msgObj){
+	/*
+    	msgObj is the copy of Error_Message_object (here errorMsg) used by the plugin. You can modify it if you need.
+    */
+    if(val>150)
+    	return {status:false, type:"error_1"};
+    else if(val<0)
+    	return {status:false, type:"error_2"};
+    else
+    	return {status:true};
+});
+
+```
+
+__How to use custom rules?__
+
+Custom rule will be used similar  to the native plugin rules. For example:
+
+```html
+<input name="age" class="isInteger isCustomeRule"/>
+<span class="error"></span>
+```

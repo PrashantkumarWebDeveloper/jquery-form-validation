@@ -1,11 +1,11 @@
 # JQUERY FORM VALIDATION PLUGIN
 This plugin is based on jQuery library and helps in validating html forms. Plugin provides default error messages which can be customised.
 
-[Getting started/Quick start guide]()
+[Getting started/Quick start guide](#)
 
-[Documentation]()
+[Documentation](#)
 
-[Exapmles]()
+[Exapmles](#)
 
 
 ## Getting Started/Quick Start Guide:
@@ -182,7 +182,7 @@ Now you are all set up and ready to fly!!
 
 [Adding custom error messages](#adding-custom-error-messages)
 
-[Adding custome rules to plugin](adding-custome-rules-to-plugin)
+[Adding custome rules to plugin](#adding-custome-rules-to-plugin)
 
 
 

@@ -1,19 +1,25 @@
 # JQUERY FORM VALIDATION PLUGIN
 This plugin is based on jQuery library and helps in validating html forms. Plugin provides default error messages which can be customised.
-# Validation Library/Plugin Documentation
 
-### Getting Started/Quick Start Guide:
+[Getting started/Quick start guide]()
+
+[Documentation]()
+
+[Exapmles]()
+
+
+## Getting Started/Quick Start Guide:
 
 Take a look to the following code first:
 
 ```html
 <!DOCTYPE html>
 <html>
-	<head>
-    	<title>Jquery validation plugin</title>
+  <head>
+      <title>Jquery validation plugin</title>
     </head>
-	<body>
-    	<form id=”myForm” onsubmit=”return app.validateForm()” novalidate=”true” >
+  <body>
+      <form id=”myForm” onsubmit=”return app.validateForm()” novalidate=”true” >
           <div>
               <input name=”first_name” class=”isRequired isChar” onblur="app.validateField(this);">
               <span class=”error”></span>
@@ -33,7 +39,7 @@ Take a look to the following code first:
  <script src=”path/to/jquery.min.js”></script>
  <script src=”path/to/validation.js”></script>
  <script>
- 	var app= validationJs(“#myForm”);
+  var app= validationJs(“#myForm”);
  </script>
  ```
  
@@ -67,11 +73,11 @@ For example:
 …
 </form> 
 
-	
+  
 <!--You need to initialize plugin by using following line of code-->
 
 <script type="text/javascript">
-		var app=validationJs('#myform');
+    var app=validationJs('#myform');
 </script>
 ```
 
@@ -79,10 +85,10 @@ For example:
 
 Add novalidate=”true” (or novalidate) in form tag, so that it will not use inbuilt HTML5 Validation.
 ```
-	<form id=”myForm” novalidate=”true”>
-		…
-		…
-	</form> 
+  <form id=”myForm” novalidate=”true”>
+    …
+    …
+  </form> 
 ```
 
 ***Step 4 (Adding element with “error” class):***
@@ -91,9 +97,9 @@ Add an element next to Input element (or next to input's parent and so on), with
 Example:
 ```
 <div>
-	<input type=”text”></input>
-	<!--error element-->
-	<span class=”error”></span>
+  <input type=”text”/>
+  <!--error element-->
+  <span class=”error”></span>
 </div>
 ```
 You can add error element as next element to input or parent of input. Additionally use error class to style your error message’s color/font etc.
@@ -102,19 +108,23 @@ You can add error element as next element to input or parent of input. Additiona
 
 Depending upon the requirements, add validation classes in your input element. Following validation classes are available:
 
-- isRequired
-- isPhone
-- isInteger
-- isNumber
-- isDecimal
-- isDigits
-- isEmail
-- isUrl
-- isDate
-- isRegex
-- isChar
-- isLength
-- isAlphaNumeric
+- __isRequired__ (Required field)
+- __isPhone__ (Indian standered mobile no.)
+- __isInteger__ (Integer, ex: 12, 25)
+- __isNumber__ (Number, ex: 10, 11.5)
+- __isDecimal__ (Decimal, ex: 11.5, 12.30)
+- __isDigits__ (Digits, use where length(no of digits) of integer matters)
+- __isEmail__ (Email)
+- __isUrl__ (URL)
+- __isDate__ (Defualt format yyyy/mm/dd)
+- __isRegex__ (regular expression. pattern attribute is required)
+- __isChar__ (charecters. A-Z and a-z)
+- __isLength__ (Length of input. Either min or max or both(min and max) atribute(s) should present)
+- __isAlphaNumeric__ (alphanumeric charecters. a-z, A-Z and 0-9)
+
+
+###### Note: Never use "isLength" in combination with "isInteger", "isNumber", and "isDecimal".
+
 
 Above classes can be used in combination or alone. We will learn about these classes in detail later.
 
@@ -143,8 +153,8 @@ Bind form to validate all fields on submit.
 Example:
 ```html
 <form onsubmit=”return app.validateForm()” novalidate=”true”>
-	…
-	…
+  …
+  …
 </form>
 ```
 
@@ -161,4 +171,32 @@ Example:
 
 
 Now you are all set up and ready to fly!!
+
+## Documentation
+
+[Understanding error classes](#understanding-error-classes)
+
+[Plugin Options and Overriding defualt error messages](#plugin-options-and-overriding-defualt-error-messages)
+
+[Refreshing data and bindings](#refreshing-data-and-bindings)
+
+[Adding custom error messages](#adding-custom-error-messages)
+
+[Adding custome rules to plugin](adding-custome-rules-to-plugin)
+
+
+
+### Understanding error classes
+(will be updated soon)
+### Plugin Options and Overriding defualt error messages
+(will be updated soon)
+### Refreshing data and bindings
+(will be updated soon)
+### Adding custom error messages
+(will be updated soon)
+### Adding custome rules to plugin
+(will be updated soon)
+
+
+
  

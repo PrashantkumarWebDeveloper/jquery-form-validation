@@ -210,9 +210,13 @@ Now you are all set up and ready to fly!!
 __Method:__ addRule()
 
 __Parameters:__ 
+
 1. Rule Name (String)
+
 2. Error Class (String)
+
 3. Error Message (String/Object)
+
 4. Callback Function 
 
 __Discription:__
@@ -227,8 +231,11 @@ __Error Message__ can be String (say Case 1) if you want to show single message 
 Ex: {error_1: "age can not be more than 150",  error_2: "age can not be less then 0"}.
 
 __Callback Function__ contains your logic where you make decision for correct/incorrect input. It has three arguments, which contains: 
+
 1. Input field reference (ref)
+
 2. Input field value and (val)
+
 3. Message Object (msgObj): For Case 2, It can be modified if needed.
 
 

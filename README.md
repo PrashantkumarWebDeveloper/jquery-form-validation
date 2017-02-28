@@ -13,7 +13,7 @@ This plugin is based on jQuery library and helps in validating html forms. Plugi
 
 - [Adding custom error messages](#adding-custom-error-messages)
 
-- [Adding custome rules to plugin](#adding-custome-rules-to-plugin)
+- [Adding custom rules to plugin](#adding-custom-rules-to-plugin)
 
 
 [Exapmles](#)
@@ -193,7 +193,7 @@ Now you are all set up and ready to fly!!
 
 [Adding custom error messages](#adding-custom-error-messages)
 
-[Adding custome rules to plugin](#adding-custome-rules-to-plugin)
+[Adding custom rules to plugin](#adding-custom-rules-to-plugin)
 
 
 
@@ -205,7 +205,7 @@ Now you are all set up and ready to fly!!
 (will be updated soon)
 ### Adding custom error messages
 (will be updated soon)
-### Adding custome rules to plugin
+### Adding custom rules to plugin
 
 __Method:__ addRule()
 
@@ -223,11 +223,11 @@ __Discription:__
 
 All parameters are required. 
 
-__Rule Name__ is used to create a custome rule with the provided name and used by the plugin. 
+__Rule Name__ is used to create a custom rule with the provided name and used by the plugin. 
 
-__Error Class__ is the class you need to add in your input element. To maintain uniqueness in error class, you should create it by adding "is" prefix in rule name (ex: for rule name "customeRule" use "isCustomeRule" as error class).
+__Error Class__ is the class you need to add in your input element. To maintain uniqueness in error class, you should create it by adding "is" prefix in rule name (ex: for rule name "customRule" use "isCustomRule" as error class).
 
-__Error Message__ can be String (say Case 1) if you want to show single message in all condition for your custome rule. If you want to show different messages depending upon condition use Object format (say Case 2). 
+__Error Message__ can be String (say Case 1) if you want to show single message in all condition for your custom rule. If you want to show different messages depending upon condition use Object format (say Case 2). 
 Ex: {error_1: "age can not be more than 150",  error_2: "age can not be less then 0"}.
 
 __Callback Function__ contains your logic where you make decision for correct/incorrect input. It has three arguments, which contains: 
@@ -253,15 +253,15 @@ var app=validationJs("#myform");
 
 //app.addRule(Rule_Name, Error_Class, Error_Message, Callback_function);
 
-app.addRule("customeRule", "isCustomeRule", "Age is invalid (error message from customeRule)", function(ref, val){
-	/*
-    	"ref" contains the input element ref
+app.addRule("customRule", "isCustomRule", "Age is invalid (error message from customRule)", function(ref, val){
+  /*
+      "ref" contains the input element ref
         "val" contains the input value
     */
-	if(val>0 && val<150)
-    	return true;
+  if(val>0 && val<150)
+      return true;
     else
-    	return false;
+      return false;
 });
 
 ```
@@ -273,22 +273,22 @@ __EXAMPLE (Case 2/Error Message parameter as Object):__
 var app=validationJs('#myform');
 
 var errorMsg={
-				error_1: "Age can not be more than 150",  
+        error_1: "Age can not be more than 150",  
                 error_2: "Age can not be less then 0"
             };
 
 //app.addRule(Rule_Name, Error_Class, Error_Message_object, Callback_function);
 
-app.addRule("customeRule", "isCustomeRule", errorMsg, function(ref, val, msgObj){
-	/*
-    	msgObj is the copy of Error_Message_object (here errorMsg) used by the plugin. You can modify it if you need.
+app.addRule("customRule", "isCustomRule", errorMsg, function(ref, val, msgObj){
+  /*
+      msgObj is the copy of Error_Message_object (here errorMsg) used by the plugin. You can modify it if you need.
     */
     if(val>150)
-    	return {status:false, type:"error_1"};
+      return {status:false, type:"error_1"};
     else if(val<0)
-    	return {status:false, type:"error_2"};
+      return {status:false, type:"error_2"};
     else
-    	return {status:true};
+      return {status:true};
 });
 
 ```
@@ -298,6 +298,6 @@ __How to use custom rules?__
 Custom rule will be used similar  to the native plugin rules. For example:
 
 ```html
-<input name="age" class="isInteger isCustomeRule"/>
+<input name="age" class="isInteger isCustomRule"/>
 <span class="error"></span>
 ```

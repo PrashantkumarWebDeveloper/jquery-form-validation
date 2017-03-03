@@ -2,7 +2,7 @@
 * Version: 1.0.0
 * Author: Prashant Kumar
 * Email: prashantsrivastava1994@outlook.com
-* Documentation link: 
+* Documentation link: https://github.com/PrashantkumarWebDeveloper/jquery-form-validation/blob/master/README.md
 */
 
 
@@ -29,6 +29,8 @@ function validationFunction(formSelectorString, $){
                               preventSubmitOnError: true,
                               dateFormat: 'yyyy/mm/dd',
                               sevarErrorMsg: "Server validation failed!",
+                              getErrorElement:undefined,
+                              
 
                               errorClass: {
                                               required: "isRequired", 
@@ -583,77 +585,80 @@ function validationFunction(formSelectorString, $){
                             };
 
                             myapp.addRule=function(name, errorClass, errorMsg, rule)
-                            {
-                                var existing=false;
-                                if(myapp.rules.hasOwnProperty(name)) 
-                                  {
-                                    existing=true;
-                                    console.error("Rule with this name already available. Try different name for rule!");
-                                  }
-                                if(!existing)
-                                {
-                                  myapp.settings.errorClass[name]=errorClass;
-                                  myapp.settings.errorMsg[name]=errorMsg;
-
-                                  myapp.rules[name]=function(selector, className)
-                                  {
-                                       var subtype,status;   
-                                       var result = rule(selector, selector.val(), myapp.settings.errorMsg[name]);
-                                       if(typeof result=="undefined") console.error('Provide return value in custome rule!');
-                                       else if(typeof result=="object")
-                                       {
-                                          if(result.hasOwnProperty('status'))
-                                          {
-                                              status=result.status;
-                                              subtype=result.type;
-                                              if(!status && !result.hasOwnProperty('type'))
-                                              {
-                                                  console.error('returning object for rule: '+name+', is not in proper format. Example: {status:boolean, type: Type-From-Error-Message-Object}');
-                                              }
-                                          }
-                                          else
-                                          {
-                                            console.error('returning object for rule: '+name+', is not in proper format. Example: {status:boolean, type: Type-From-Error-Message-Object}. "type" is optional when "status" is true.');
-                                          }
-                                       }
-                                       else if(typeof result=="boolean")
-                                       {
-                                          status=result;
-                                       }
-                                       else
-                                       {
-                                         console.error("return type of your custome rule: "+name+", should be either boolean or an object ");
-                                       }
-                                      
-
-                                      if(status)
-                                      {
-                                         myapp.hideError(selector);
-                                         return true;
-                                      }
-                                      else
-                                      {
-                                        myapp.showError(selector, name, subtype);
-                                      }
-                                  }
-                                  myapp.constructFieldWiseMsgArray(); //updating messages field wise
-                                  console.log('Rule with the name "'+name+'" is added!');
-                                }
+                            {   
+                                if(arguments.length!=4) console.error("Missing argument! Method addRule() requires 4 arguments: 1. Rule Name, 2. Error Class, 3. Error Message, 4. Callback function");
+                                else{
+                                  var existing=false;
+                                                                if(myapp.rules.hasOwnProperty(name)) 
+                                                                  {
+                                                                    existing=true;
+                                                                    console.error("Rule with this name already available. Try different name for rule!");
+                                                                  }
+                                                                if(!existing)
+                                                                {
+                                                                  myapp.settings.errorClass[name]=errorClass;
+                                                                  myapp.settings.errorMsg[name]=errorMsg;
+                                
+                                                                  myapp.rules[name]=function(selector, className)
+                                                                  {
+                                                                       var subtype,status;   
+                                                                       var result = rule(selector, selector.val(), myapp.settings.errorMsg[name]);
+                                                                       if(typeof result=="undefined") console.error('Provide return value in custome rule!');
+                                                                       else if(typeof result=="object")
+                                                                       {
+                                                                          if(result.hasOwnProperty('status'))
+                                                                          {
+                                                                              status=result.status;
+                                                                              subtype=result.type;
+                                                                              if(!status && !result.hasOwnProperty('type'))
+                                                                              {
+                                                                                  console.error('returning object for rule: '+name+', is not in proper format. Example: {status:boolean, type: Type-From-Error-Message-Object}');
+                                                                              }
+                                                                          }
+                                                                          else
+                                                                          {
+                                                                            console.error('returning object for rule: '+name+', is not in proper format. Example: {status:boolean, type: Type-From-Error-Message-Object}. "type" is optional when "status" is true.');
+                                                                          }
+                                                                       }
+                                                                       else if(typeof result=="boolean")
+                                                                       {
+                                                                          status=result;
+                                                                       }
+                                                                       else
+                                                                       {
+                                                                         console.error("return type of your custome rule: "+name+", should be either boolean or an object ");
+                                                                       }
+                                                                      
+                                
+                                                                      if(status)
+                                                                      {
+                                                                         myapp.hideError(selector);
+                                                                         return true;
+                                                                      }
+                                                                      else
+                                                                      {
+                                                                        myapp.showError(selector, name, subtype);
+                                                                      }
+                                                                  }
+                                                                  myapp.constructFieldWiseMsgArray(); //updating messages field wise
+                                                                  console.log('Rule with the name "'+name+'" is added!');
+                                                                }
+                                    }
 
                             };
 
                             myapp.validateField= function(ref)
                             {
                               var valid=true;
-                                $.each(myapp.settings.errorClass, function(key, className){
-                                   if($(ref).hasClass(myapp.settings.errorClass[key]))
-                                   {
-                                      if(valid && !(!$(ref).hasClass(myapp.settings.errorClass.required) && $.trim($(ref).val())=="")) 
-                                      {
-                                        if(!myapp.rules[key]($(ref), myapp.settings.errorClass[key])) valid=false;
-                                      }
-                                   }
-                                });
+                                   var classArray=myapp.getOrderedClass($(ref));
+                                   
+                                   $.each(classArray, function(index, value){
+                                         if(valid && !(!$(ref).hasClass(myapp.settings.errorClass.required) && $.trim($(ref).val())=="")) 
+                                         {
+                                           if(!myapp.rules[value]($(ref), myapp.settings.errorClass[value])) valid=false;
+                                         }  
+                                   });
+                                
                                 myapp.clientStatus=true;
 
                                 $.each(myapp.cstmInputObjArray, function(index, obj){
@@ -685,15 +690,28 @@ function validationFunction(formSelectorString, $){
                           
                             myapp.searchErrorElem= function(ref)
                             {
-                                if(ref.is(myapp.formRef)) return undefined;
-                                else
+                                if(myapp.settings.getErrorElement)
                                 {
-                                    if(ref.next().hasClass(myapp.settings.formErrorClass))  return ref.next();
+                                    var elm=myapp.settings.getErrorElement(ref);
+                                    if(elm)
+                                        return myapp.settings.getErrorElement(ref);
                                     else
                                     {
-                                        return myapp.searchErrorElem($(ref).parent());
+                                      console.error("Method getErrorElement() should return reference of error element!");
+                                      return undefined;
                                     }
                                 }
+                                else{
+                                        if(ref.is(myapp.formRef)) return undefined;
+                                        else
+                                        {
+                                            if(ref.next().hasClass(myapp.settings.formErrorClass))  return ref.next();
+                                            else
+                                            {
+                                                return myapp.searchErrorElem($(ref).parent());
+                                            }
+                                        }
+                                    }
                             };
 
                             /*messaging function*/
@@ -788,6 +806,10 @@ function validationFunction(formSelectorString, $){
                                      cstmInputObj['errorRef'].text(errorMsg);
                                      cstmInputObj['errorRef'].show();
                                   }
+                                  else
+                                  {
+                                    console.error('Error element not found! Add element with class: '+myapp.settings.formErrorClass+' after Input field, eg. <span class="'+myapp.settings.formErrorClass+'"></span>');
+                                  }
                                 }
                             };
                             myapp.hideError=function(ref)
@@ -808,11 +830,47 @@ function validationFunction(formSelectorString, $){
 
                                if(myapp.settings.messaging)
                                {
-                                  cstmInputObj['errorRef'].text('');
-                                  cstmInputObj['errorRef'].hide();
+                                  if(cstmInputObj['errorRef'])
+                                  {
+                                      cstmInputObj['errorRef'].text('');
+                                      cstmInputObj['errorRef'].hide();
+                                  }
+                                  else
+                                  {
+                                      console.error('Error element not found! Add element with class: '+myapp.settings.formErrorClass+' after Input field, eg. <span class="'+myapp.settings.formErrorClass+'"></span>');
+                                  }
+                                  
                                }
                             };
+                            myapp.getOrderedClass=function(ref)
+                            {
+                                var classString=ref.attr('class');
+                                if(classString)
+                                {
+                                    var origClassArray=classString.split(" ");
 
+                                    var classArray=[];
+                                    var filteredClassArray=[];
+
+                                    $.each(myapp.settings.errorClass, function(key, value){
+                                        if(origClassArray.find(function(elem){return value===elem.trim();}))
+                                        {
+                                          var index=classString.indexOf(value);
+                                          classArray[index]=key;
+                                        }          
+                                    });
+                                    for(var x in classArray)
+                                    {
+                                      if(classArray[x]) filteredClassArray.push(classArray[x]);
+                                    }
+                                    
+                                    return filteredClassArray;
+                                }
+                                else
+                                {
+                                  return undefined;
+                                }
+                            };
                             myapp.refresh=function(initialize)
                             {
                                 myapp.formRef=$(formSelectorString);
@@ -843,5 +901,6 @@ function validationFunction(formSelectorString, $){
                                 myapp.showError($(ref), status, msg);
                             };
 
+                            
                             
 }

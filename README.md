@@ -215,7 +215,79 @@ app.refresh(); //this will refresh all bindings(form and inputs)
 ```
 
 ### Adding custom error messages
-(will be updated soon)
+__Method:__ addErrorMsg()
+
+__Parameters:__ Object/Array of Object
+
+__Discription:__ 
+
+Suppose you have "First Name" field in the form and you want to show a customized error message like:
+
+When required error occures: First Name is required!
+
+When someone enters number: First Name should only contains alphabatical character!
+
+To achieve this you need to do following:
+
+1. Add a selector to the concerned input(may be ID or Class)
+2. Add error classes to input fields
+3. Create message object: rule name(rule name can be obtained by removing "is" from error class string and making first charecter of remaining string as lowercase) as __Key__ and conerned message as __Value__.
+4. Now create another object with key as the __selector__ of your input and value as a message object.
+5. Add this new object to your app object by using __addErrorMsg()__ Method.
+```html
+<input type="text" id="first_name" class="isRequired isChar" />
+<span class="error"></span>
+```
+
+```javascript
+var app=validationJs("#myform");
+var first_name_msg={
+						"required": "First Name is required!",
+                        "char":	"First Name should only contains alphabatical character!"
+                   };
+app.addErrorMsg({"#first_name": first_name_msg}); //function can accept single object or array of such objects
+
+```
+
+To add similler error messages to samillier type of fields use __class__ as selector.
+For example your form has to emails, primary and secondary, and you want to provide common custom error messages.
+
+To achieve this you need do following: 
+1. Add a selector (class) to all concerned inputs (for both emails in this case, say "cstm-email").
+2. Add error classes to input fields
+3. Create message object: rule name(rule name can be obtained by removing "is" from error class string and making first charecter of remaining string as lowercase) as __Key__ and conerned message as __Value__.
+4. Now create another object with key as the __selector__ of your input and value as a message object.
+5. Add this new object to your app object by using __addErrorMsg()__ Method.
+
+```html
+<input type="text" id="first_name" name="first_name" class="isRequired isChar" />
+<span class="error"></span>
+
+<input type="email" name="primary_email"  class="cstm-email isRequired" />
+<span class="error"></span>
+
+<input type="email" name="secondary_email"  class="cstm-email isRequired" />
+<span class="error"></span>
+```
+
+```javascript
+var app=validationJs("#myform");
+var first_name_msg={
+						"required": "First Name is required!",
+                        "char":	"First Name should only contains alphabatical character!"
+                   };
+var email_msg={
+					"required": "Email is required field, and this is first custom error message",
+         			"email": "Email is invalid, and this is second custom error message"           
+				};
+app.addErrorMsg([
+					{"#first_name": first_name_msg},
+                    {".cstm-email": email_msg}
+                    
+                ]); //function can accept single object or array of such objects
+```
+
+__NOTE:__ If you use multiple selectors(classes or ids) to customize error message, post message object in array will override the previous message object.
 ### Adding custom rules to plugin
 
 __Method:__ addRule()

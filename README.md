@@ -223,7 +223,7 @@ __Discription:__
 
 Suppose you have "First Name" field in the form and you want to show a customized error message like:
 
-When required error occures: First Name is required!
+When required error occurs: First Name is required!
 
 When someone enters number: First Name should only contains alphabatical character!
 

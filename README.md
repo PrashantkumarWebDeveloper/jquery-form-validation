@@ -202,7 +202,18 @@ Now you are all set up and ready to fly!!
 ### Plugin Options and Overriding defualt error messages
 (will be updated soon)
 ### Refreshing data and bindings
-(will be updated soon)
+Some times we need to refresh bindings of elements. Such cases are:
+
+- When we add input fields at run time(validation time).
+- When we rerender the input field (may be after server side validtion)
+
+We can refresh the bindings whenever we found the case where binding may break.
+
+```javascript
+var app= validationJs(“#myForm”);
+app.refresh(); //this will refresh all bindings(form and inputs)
+```
+
 ### Adding custom error messages
 (will be updated soon)
 ### Adding custom rules to plugin

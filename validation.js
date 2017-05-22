@@ -30,7 +30,10 @@ function validationFunction(formSelectorString, $){
                               dateFormat: 'yyyy/mm/dd',
                               sevarErrorMsg: "Server validation failed!",
                               getErrorElement:undefined,
-                              
+                              fieldSuccessCallback: undefined, //callback will get refrence of field as first parameter
+                              fieldErrorCallback: undefined,  //callback will get refrence of field as first parameter and error type as second parameter
+                              formSuccessCallback: undefined, //callback will get refrence of form as first parameter
+                              formErrorCallback: undefined,  //callback will get refrence of form as first parameter
 
                               errorClass: {
                                               required: "isRequired", 
@@ -237,9 +240,10 @@ function validationFunction(formSelectorString, $){
                               integer:function(selector, className)
                               {
                                   var regex=/^-?\d+$/;
-                                  var num=Number($.trim(selector.val()));
+                                  var num=$.trim(selector.val());
                                   if(regex.test(num))
                                   {
+                                     num = Number(num);
                                       var min=selector.attr('min');
                                       var max=selector.attr('max');
                                       
@@ -298,9 +302,10 @@ function validationFunction(formSelectorString, $){
                               number:function(selector, className)
                               {
                                   var regex=/^[0-9]+([.][0-9]+)?$/;  
-                                  var num=Number($.trim(selector.val()));
+                                  var num=$.trim(selector.val());
                                   if(regex.test(num))
                                   {
+                                      num = Number(num);
                                       var min=selector.attr('min');
                                       var max=selector.attr('max');
                                       
@@ -359,9 +364,10 @@ function validationFunction(formSelectorString, $){
                               decimal:function(selector, className)
                               {
                                   var regex=/^[0-9]+([.][0-9]+)$/;    
-                                  var num=Number($.trim(selector.val()));
+                                  var num=$.trim(selector.val());
                                   if(regex.test(num))
                                   {
+                                     num = Number(num);
                                       var min=selector.attr('min');
                                       var max=selector.attr('max');
                                       
@@ -649,21 +655,48 @@ function validationFunction(formSelectorString, $){
 
                             myapp.validateField= function(ref)
                             {
+                              ref = $(ref);
                               var valid=true;
-                                   var classArray=myapp.getOrderedClass($(ref));
+                              var errType;
+                                   var classArray=myapp.getOrderedClass(ref);
                                    
-                                   $.each(classArray, function(index, value){
-                                         if(valid && !(!$(ref).hasClass(myapp.settings.errorClass.required) && $.trim($(ref).val())=="")) 
+                                   //when input doesn't have isRequired class and have empty value, 
+                                  //then no need to check for validation
+                                   if(!ref.hasClass(myapp.settings.errorClass.required) && $.trim(ref.val())=="")
+                                   {
+                                      //when isRequired class is not available and someone enters
+                                      //invalid input than empty that field. In this case error can not be hidden
+                                      //because it doesn't go through any conditonal test
+                                      myapp.hideError(ref);
+                                   }
+                                   else{
+                                      if(ref.hasClass(myapp.settings.errorClass.required))
+                                      {
+                                         if(!myapp.rules.required(ref, myapp.settings.errorClass.required)) 
                                          {
-                                           if(!myapp.rules[value]($(ref), myapp.settings.errorClass[value])) valid=false;
-                                         }  
-                                   });
-                                
+                                            valid=false;
+                                            errType = 'required';
+                                         }
+                                      }
+                                      $.each(classArray, function(index, value){
+                                         if(valid)
+                                            if(!myapp.rules[value](ref, myapp.settings.errorClass[value])) 
+                                            {
+                                              valid=false;
+                                              errType = value;
+                                            }
+                                      });
+                                   }
+
                                 myapp.clientStatus=true;
 
                                 $.each(myapp.cstmInputObjArray, function(index, obj){
                                   if(myapp.clientStatus && !obj.clientStatus)  myapp.clientStatus=false;
                                 });
+
+                              
+                              if(valid && myapp.settings.fieldSuccessCallback) myapp.settings.fieldSuccessCallback(ref);
+                              if(!valid  && myapp.settings.fieldErrorCallback) myapp.settings.fieldErrorCallback(ref, errType);
                               return valid;
                             };
 
@@ -675,6 +708,8 @@ function validationFunction(formSelectorString, $){
                                   if(!myapp.validateField(elem)) valid=false;     
                               });
                               myapp.clientStatus=valid;
+                              if(valid && myapp.settings.formSuccessCallback) myapp.settings.formSuccessCallback(myapp.formRef);
+                              if(!valid  && myapp.settings.formErrorCallback) myapp.settings.formErrorCallback(myapp.formRef);
                               return myapp.clientStatus;
                             };
 
@@ -847,23 +882,29 @@ function validationFunction(formSelectorString, $){
                                 var classString=ref.attr('class');
                                 if(classString)
                                 {
-                                    var origClassArray=classString.split(" ");
+                                    var origClassArray=classString.split(" "); //stores all classes of element
 
-                                    var classArray=[];
-                                    var filteredClassArray=[];
+                                    var classArray=[]; // stores only error classes but indexes(of error classes) are discontinuous. Ex: ['isRequired', undefined, undefined, 'isChar']
+                                    var filteredClassArray=[]; // stores only error classes with continuous indexes(of error classes). Ex: ['isRequired','isChar']
 
                                     $.each(myapp.settings.errorClass, function(key, value){
                                         if(origClassArray.find(function(elem){return value===elem.trim();}))
                                         {
-                                          var index=classString.indexOf(value);
-                                          classArray[index]=key;
+                                          //required error class is not stored in Array, because required should be the first checkalways
+                                          if(!(value == myapp.settings.errorClass.required)){
+                                            var index=classString.indexOf(value); // index will be the first charecter index of error class, in class string
+                                            classArray[index]=key;
+                                          }
+
                                         }          
                                     });
+                                    //now constructing continuous index(of error classes) array
                                     for(var x in classArray)
                                     {
+                                      //filtering indexes which have undefined value
                                       if(classArray[x]) filteredClassArray.push(classArray[x]);
                                     }
-                                    
+                                    //console.log(filteredClassArray);
                                     return filteredClassArray;
                                 }
                                 else

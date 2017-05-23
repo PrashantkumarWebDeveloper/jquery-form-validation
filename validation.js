@@ -9,10 +9,17 @@
 // initialization function
 function validationJs(formSelectorString, options)
 {
-  var myapp=new validationFunction(formSelectorString, jQuery);
-  myapp.settings=jQuery.extend(true, {}, myapp.defaults, options);
-  myapp.init();
-  return myapp;
+  if(formSelectorString)
+  {
+    var myapp=new validationFunction(formSelectorString, jQuery);
+    myapp.settings=jQuery.extend(true, {}, myapp.defaults, options);
+    myapp.init();
+    return myapp;
+  }
+  else{
+    console.error('Form selector is not provided! Please add selector string for form.');
+  }
+  
 }
 
 // below function is used for constructing object
@@ -774,7 +781,7 @@ function validationFunction(formSelectorString, $){
                             {
                                 myapp.cstmInputObjArray=[];
 
-                                var inputs=myapp.formRef.find('input, textarea, select');
+                                var inputs=myapp.formRef.find('input:not(input[type="button"], input[type="submit"], input[type="reset"]), textarea, select');
                                
                                 inputs.each(function(i, elm){
                                     var element=$(elm);
@@ -915,11 +922,17 @@ function validationFunction(formSelectorString, $){
                             myapp.refresh=function(initialize)
                             {
                                 myapp.formRef=$(formSelectorString);
-                                myapp.constructFieldWiseMsgArray();
-                                if(initialize) 
-                                  console.info("ValidationJs Initialized");
-                                else
-                                  console.info("ValidationJs refreshed");
+                                if(myapp.formRef){
+                                  myapp.constructFieldWiseMsgArray();
+                                  if(initialize) 
+                                    console.info("ValidationJs Initialized");
+                                  else
+                                    console.info("ValidationJs refreshed");
+                                }
+                                else{
+                                  console.error('Form with selector: "'+formSelectorString+'" not found!');
+                                }
+                                
                             }
 
                             // initialization

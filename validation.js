@@ -31,18 +31,19 @@ function validationFunction(formSelectorString, $){
               myapp.settings={};
 
               myapp.defaults={
-                              messaging:true,
+                              messaging:true, //whether message is required or not
                               formErrorClass: 'error',
-                              preventSubmitOnError: true,
+                              
                               dateFormat: 'yyyy/mm/dd',
                               sevarErrorMsg: "Server validation failed!",
-                              getErrorElement:undefined,
+                              getErrorElement:undefined,  // custom function to get element to show error message for each input
                               fieldSuccessCallback: undefined, //callback will get refrence of field as first parameter
                               fieldErrorCallback: undefined,  //callback will get refrence of field as first parameter and error type as second parameter
                               formSuccessCallback: undefined, //callback will get refrence of form as first parameter
                               formErrorCallback: undefined,  //callback will get refrence of form as first parameter
-                              noValidateClass: 'novalidate',
+                              noValidateClass: 'novalidate', //app.refresh() call is recomonded while addition/removal of this class
                               errorClass: {
+                                              //override below classes by passing option(as second parameter in object format) in validationJs() function
                                               required: "isRequired", 
                                               phone:  "isPhone",
                                               integer: "isInteger",
@@ -59,6 +60,7 @@ function validationFunction(formSelectorString, $){
                                               
                                             },
                               errorMsg: {
+                                            //override error messages by passing in validationJs() option
                                             required: "This is required field!",
                                             char: "This field can contain characters only!",
                                             phone: "Phone Number should be a Number of 10 digits!",
@@ -126,7 +128,7 @@ function validationFunction(formSelectorString, $){
                         };
                         
                         myapp.rules = {
-                              required:function(selector, className)
+                              required:function(selector)
                               {
                                       var inputType=selector.attr('type');
 
@@ -170,7 +172,7 @@ function validationFunction(formSelectorString, $){
                                       }
                                       
                               },
-                              char: function(selector, className)
+                              char: function(selector)
                               {
                                 var val=$.trim(selector.val());
                                 var regex=/^[a-zA-Z]+$/;
@@ -186,7 +188,7 @@ function validationFunction(formSelectorString, $){
                                 }
 
                               },
-                              alphaNumeric: function(selector, className)
+                              alphaNumeric: function(selector)
                               {
                                 var val=$.trim(selector.val());
                                 var regex=/^[a-zA-Z0-9]*$/;
@@ -201,7 +203,7 @@ function validationFunction(formSelectorString, $){
                                     return false;
                                 }
                               },
-                              phone:function(selector, className) 
+                              phone:function(selector) 
                               {
                                   var regex = new RegExp("^[0-9]{10}$");
                                   var num = $.trim(selector.val());
@@ -216,7 +218,7 @@ function validationFunction(formSelectorString, $){
                                       return false;
                                   }
                               },
-                              email:function(selector, className)
+                              email:function(selector)
                               {
                                  var regex=/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                                  var email=$.trim(selector.val());
@@ -230,7 +232,7 @@ function validationFunction(formSelectorString, $){
                                     return false;
                                  }
                               },
-                              url:function(selector, className)
+                              url:function(selector)
                               {
                                  var regex=/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
                                  var url=$.trim(selector.val());
@@ -244,7 +246,7 @@ function validationFunction(formSelectorString, $){
                                     return false;
                                  }
                               },
-                              integer:function(selector, className)
+                              integer:function(selector)
                               {
                                   var regex=/^-?\d+$/;
                                   var num=$.trim(selector.val());
@@ -306,7 +308,7 @@ function validationFunction(formSelectorString, $){
                                       return false;
                                   }
                               },
-                              number:function(selector, className)
+                              number:function(selector)
                               {
                                   var regex=/^[0-9]+([.][0-9]+)?$/;  
                                   var num=$.trim(selector.val());
@@ -368,7 +370,7 @@ function validationFunction(formSelectorString, $){
                                       return false;
                                   }
                               },
-                              decimal:function(selector, className)
+                              decimal:function(selector)
                               {
                                   var regex=/^[0-9]+([.][0-9]+)$/;    
                                   var num=$.trim(selector.val());
@@ -430,7 +432,7 @@ function validationFunction(formSelectorString, $){
                                       return false;
                                   }
                               },
-                              digits:function(selector, className)
+                              digits:function(selector)
                               {
                                   var regex=/^-?\d+$/;
                                   var num=$.trim(selector.val());
@@ -445,7 +447,7 @@ function validationFunction(formSelectorString, $){
                                       return false;
                                   }
                               },
-                              date:function(selector, className)
+                              date:function(selector)
                               {
                                   
                                   var date=$.trim(selector.val());
@@ -513,7 +515,7 @@ function validationFunction(formSelectorString, $){
                                       return false;
                                   }
                               },
-                              regex: function(selector, className)
+                              regex: function(selector)
                               {
                                   var pat=selector.attr('pattern');
                                   var pat_bool=(typeof pat !== typeof undefined && pat !== false)?true:false;
@@ -537,7 +539,7 @@ function validationFunction(formSelectorString, $){
                                           return false;
                                         }
                               },
-                              length:function(selector, className)
+                              length:function(selector)
                               {
                                  
                                   var str=$.trim(selector.val());
@@ -612,7 +614,7 @@ function validationFunction(formSelectorString, $){
                                                                   myapp.settings.errorClass[name]=errorClass;
                                                                   myapp.settings.errorMsg[name]=errorMsg;
                                 
-                                                                  myapp.rules[name]=function(selector, className)
+                                                                  myapp.rules[name]=function(selector)
                                                                   {
                                                                        var subtype,status;   
                                                                        var result = rule(selector, selector.val(), myapp.settings.errorMsg[name]);
@@ -653,7 +655,7 @@ function validationFunction(formSelectorString, $){
                                                                         myapp.showError(selector, name, subtype);
                                                                       }
                                                                   }
-                                                                  myapp.constructFieldWiseMsgArray(); //updating messages field wise
+                                                                  myapp.constructInputObjectArray(); //updating messages field wise
                                                                   console.log('Rule with the name "'+name+'" is added!');
                                                                 }
                                     }
@@ -663,12 +665,15 @@ function validationFunction(formSelectorString, $){
                             myapp.validateField= function(ref)
                             {
                               ref = $(ref);
+                              var classArray=myapp.getOrderedClass(ref);
+                              var valid=true;
+                              var errType;
                               if(!ref.hasClass(myapp.settings.noValidateClass))
                               {
-                                  var valid=true;
-                                  var errType;
-                                       var classArray=myapp.getOrderedClass(ref);
-                                       
+
+                                if(!(classArray.length === 0) || ref.hasClass(myapp.settings.errorClass.required))
+                                {
+                                 
                                        //when input doesn't have isRequired class and have empty value, 
                                       //then no need to check for validation
                                        if(!ref.hasClass(myapp.settings.errorClass.required) && $.trim(ref.val())=="")
@@ -681,7 +686,7 @@ function validationFunction(formSelectorString, $){
                                        else{
                                           if(ref.hasClass(myapp.settings.errorClass.required))
                                           {
-                                             if(!myapp.rules.required(ref, myapp.settings.errorClass.required)) 
+                                             if(!myapp.rules.required(ref)) 
                                              {
                                                 valid=false;
                                                 errType = 'required';
@@ -689,7 +694,7 @@ function validationFunction(formSelectorString, $){
                                           }
                                           $.each(classArray, function(index, value){
                                              if(valid)
-                                                if(!myapp.rules[value](ref, myapp.settings.errorClass[value])) 
+                                                if(!myapp.rules[value](ref)) 
                                                 {
                                                   valid=false;
                                                   errType = value;
@@ -698,28 +703,26 @@ function validationFunction(formSelectorString, $){
                                        }
 
                                     
-
-
                                     myapp.clientStatus=true;
                                     $.each(myapp.cstmInputObjArray, function(index, obj){
                                       if(myapp.clientStatus && !obj.clientStatus)  myapp.clientStatus=false;
                                     });
-
-                                  //callback wiil be called for those inputs which have error-classes
-                                  if(!(classArray.length === 0) || ref.hasClass(myapp.settings.errorClass.required))
-                                  {
+                                  
+                                      //callback wiil be called for those inputs which have error-classes
                                       if(valid && myapp.settings.fieldSuccessCallback) myapp.settings.fieldSuccessCallback(ref);
                                       if(!valid  && myapp.settings.fieldErrorCallback) myapp.settings.fieldErrorCallback(ref, errType);
                                   }
                                   
                                   return valid; 
                               }
-                              
+                              else{
+                                myapp.hideError(ref);
+                              }
                             };
 
                             myapp.validateForm= function()
                             {
-                              var inputs=myapp.formRef.find('input:not(input[type="button"], input[type="submit"], input[type="reset"], input[type="hidden"]), textarea, select').not('.'+myapp.settings.noValidateClass);
+                              var inputs=myapp.formRef.find('input:not(input[type="button"], input[type="submit"], input[type="reset"], input[type="hidden"]), textarea, select');
                               var valid=true;
                               $.each(inputs, function(index, elem){
                                   if(!myapp.validateField(elem)) valid=false;     
@@ -736,7 +739,7 @@ function validationFunction(formSelectorString, $){
                                 myapp.formRef.find('.'+myapp.settings.formErrorClass).text('').hide();
                                 myapp.clientStatus=false;
                                 myapp.serverStatus=false;
-                                myapp.constructFieldWiseMsgArray();
+                                myapp.constructInputObjectArray();
 
                             }
 
@@ -785,26 +788,35 @@ function validationFunction(formSelectorString, $){
                                    myapp.cstmSelectorMsgArray.push($.extend(true,{},arrayOfObj));
                                 }
                                 //constructing field wise message each time new messages are added
-                                myapp.constructFieldWiseMsgArray(); 
+                                myapp.constructInputObjectArray(); 
                             };
-                           
-                            myapp.constructFieldWiseMsgArray=function()
+
+                            myapp.setMsgObjForField = function(element)
+                            {
+                                if(!myapp.findCstmInputObj(element))
+                                {
+                                    myapp.cstmInputObjArray.push({inputRef:element, errorRef: myapp.searchErrorElem(element), msg: {}, clientStatus: (element.hasClass(myapp.settings.errorClass.required) || element.hasClass(myapp.settings.noValidateClass))});
+                                }
+                                var cstmInputObj =myapp.findCstmInputObj(element);
+                                var msgObj={};
+                                $.each(myapp.cstmSelectorMsgArray,function(index, obj){
+                                    if(element.is(obj.selector)){
+                                        $.extend(true, msgObj, obj.msg);
+                                    }
+                                });
+                                cstmInputObj.msg=msgObj;
+                            };
+                            
+                            myapp.constructInputObjectArray=function()
                             {
                                 myapp.cstmInputObjArray=[];
 
-                                var inputs=myapp.formRef.find('input:not(input[type="button"], input[type="submit"], input[type="reset"], input[type="hidden"]), textarea, select').not('.'+myapp.settings.noValidateClass);
+                                var inputs=myapp.formRef.find('input:not(input[type="button"], input[type="submit"], input[type="reset"], input[type="hidden"]), textarea, select');
                                
                                 inputs.each(function(i, elm){
-                                    var element=$(elm);
-                                    var msgObj={};
-                                    $.each(myapp.cstmSelectorMsgArray,function(index, obj){
-                                        if(element.is(obj.selector)){
-                                            $.extend(true, msgObj, obj.msg);
-                                        }
-                                    });
                                     
-                                    myapp.cstmInputObjArray.push({inputRef:element, errorRef: myapp.searchErrorElem(element), msg: msgObj, clientStatus: !element.hasClass(myapp.settings.errorClass.required)});
-                                   
+                                    var element = $(elm);
+                                    myapp.setMsgObjForField(element);
                                 });
 
                             };
@@ -934,7 +946,7 @@ function validationFunction(formSelectorString, $){
                             {
                                 myapp.formRef=$(formSelectorString);
                                 if(myapp.formRef){
-                                  myapp.constructFieldWiseMsgArray();
+                                  myapp.constructInputObjectArray();
 
                                   //hidding errors of elements with class 'novalidate'
                                   $(myapp.formRef).find("."+myapp.settings.noValidateClass).each(function(){
@@ -971,7 +983,5 @@ function validationFunction(formSelectorString, $){
                                 msg= msg || myapp.settings.sevarErrorMsg;
                                 myapp.showError($(ref), status, msg);
                             };
-
-                            
-                            
+                       
 }

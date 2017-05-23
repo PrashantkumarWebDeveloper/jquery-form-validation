@@ -31,19 +31,18 @@ function validationFunction(formSelectorString, $){
               myapp.settings={};
 
               myapp.defaults={
-                              messaging:true, //whether message is required or not
+                              messaging:true,
                               formErrorClass: 'error',
-                              
+                              preventSubmitOnError: true,
                               dateFormat: 'yyyy/mm/dd',
                               sevarErrorMsg: "Server validation failed!",
-                              getErrorElement:undefined,  // custom function to get element to show error message for each input
+                              getErrorElement:undefined,
                               fieldSuccessCallback: undefined, //callback will get refrence of field as first parameter
                               fieldErrorCallback: undefined,  //callback will get refrence of field as first parameter and error type as second parameter
                               formSuccessCallback: undefined, //callback will get refrence of form as first parameter
                               formErrorCallback: undefined,  //callback will get refrence of form as first parameter
-                              noValidateClass: 'novalidate', //app.refresh() call is recomonded while addition/removal of this class
+                              noValidateClass: 'novalidate',
                               errorClass: {
-                                              //override below classes by passing option(as second parameter in object format) in validationJs() function
                                               required: "isRequired", 
                                               phone:  "isPhone",
                                               integer: "isInteger",
@@ -60,7 +59,6 @@ function validationFunction(formSelectorString, $){
                                               
                                             },
                               errorMsg: {
-                                            //override error messages by passing in validationJs() option
                                             required: "This is required field!",
                                             char: "This field can contain characters only!",
                                             phone: "Phone Number should be a Number of 10 digits!",
@@ -703,21 +701,25 @@ function validationFunction(formSelectorString, $){
                                        }
 
                                     
-                                    myapp.clientStatus=true;
-                                    $.each(myapp.cstmInputObjArray, function(index, obj){
-                                      if(myapp.clientStatus && !obj.clientStatus)  myapp.clientStatus=false;
-                                    });
-                                  
                                       //callback wiil be called for those inputs which have error-classes
                                       if(valid && myapp.settings.fieldSuccessCallback) myapp.settings.fieldSuccessCallback(ref);
                                       if(!valid  && myapp.settings.fieldErrorCallback) myapp.settings.fieldErrorCallback(ref, errType);
                                   }
-                                  
-                                  return valid; 
+                                  else{
+
+                                      myapp.findCstmInputObj(ref).clientStatus = true;
+                                  }
+                                 
                               }
                               else{
                                 myapp.hideError(ref);
                               }
+                              
+                              myapp.clientStatus=true;
+                              $.each(myapp.cstmInputObjArray, function(index, obj){
+                                if(myapp.clientStatus && !obj.clientStatus)  myapp.clientStatus=false;
+                              });
+                              return valid; 
                             };
 
                             myapp.validateForm= function()
@@ -983,5 +985,7 @@ function validationFunction(formSelectorString, $){
                                 msg= msg || myapp.settings.sevarErrorMsg;
                                 myapp.showError($(ref), status, msg);
                             };
-                       
+
+                            
+                            
 }

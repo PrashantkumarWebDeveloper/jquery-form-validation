@@ -41,7 +41,7 @@ function validationFunction(formSelectorString, $){
                               fieldErrorCallback: undefined,  //callback will get refrence of field as first parameter and error type as second parameter
                               formSuccessCallback: undefined, //callback will get refrence of form as first parameter
                               formErrorCallback: undefined,  //callback will get refrence of form as first parameter
-
+                              noValidateClass: 'novalidate',
                               errorClass: {
                                               required: "isRequired", 
                                               phone:  "isPhone",
@@ -663,53 +663,63 @@ function validationFunction(formSelectorString, $){
                             myapp.validateField= function(ref)
                             {
                               ref = $(ref);
-                              var valid=true;
-                              var errType;
-                                   var classArray=myapp.getOrderedClass(ref);
-                                   
-                                   //when input doesn't have isRequired class and have empty value, 
-                                  //then no need to check for validation
-                                   if(!ref.hasClass(myapp.settings.errorClass.required) && $.trim(ref.val())=="")
-                                   {
-                                      //when isRequired class is not available and someone enters
-                                      //invalid input than empty that field. In this case error can not be hidden
-                                      //because it doesn't go through any conditonal test
-                                      myapp.hideError(ref);
-                                   }
-                                   else{
-                                      if(ref.hasClass(myapp.settings.errorClass.required))
-                                      {
-                                         if(!myapp.rules.required(ref, myapp.settings.errorClass.required)) 
-                                         {
-                                            valid=false;
-                                            errType = 'required';
-                                         }
-                                      }
-                                      $.each(classArray, function(index, value){
-                                         if(valid)
-                                            if(!myapp.rules[value](ref, myapp.settings.errorClass[value])) 
-                                            {
-                                              valid=false;
-                                              errType = value;
-                                            }
-                                      });
-                                   }
+                              if(!ref.hasClass(myapp.settings.noValidateClass))
+                              {
+                                  var valid=true;
+                                  var errType;
+                                       var classArray=myapp.getOrderedClass(ref);
+                                       
+                                       //when input doesn't have isRequired class and have empty value, 
+                                      //then no need to check for validation
+                                       if(!ref.hasClass(myapp.settings.errorClass.required) && $.trim(ref.val())=="")
+                                       {
+                                          //when isRequired class is not available and someone enters
+                                          //invalid input than empty that field. In this case error can not be hidden
+                                          //because it doesn't go through any conditonal test
+                                          myapp.hideError(ref);
+                                       }
+                                       else{
+                                          if(ref.hasClass(myapp.settings.errorClass.required))
+                                          {
+                                             if(!myapp.rules.required(ref, myapp.settings.errorClass.required)) 
+                                             {
+                                                valid=false;
+                                                errType = 'required';
+                                             }
+                                          }
+                                          $.each(classArray, function(index, value){
+                                             if(valid)
+                                                if(!myapp.rules[value](ref, myapp.settings.errorClass[value])) 
+                                                {
+                                                  valid=false;
+                                                  errType = value;
+                                                }
+                                          });
+                                       }
 
-                                myapp.clientStatus=true;
+                                    
 
-                                $.each(myapp.cstmInputObjArray, function(index, obj){
-                                  if(myapp.clientStatus && !obj.clientStatus)  myapp.clientStatus=false;
-                                });
 
+                                    myapp.clientStatus=true;
+                                    $.each(myapp.cstmInputObjArray, function(index, obj){
+                                      if(myapp.clientStatus && !obj.clientStatus)  myapp.clientStatus=false;
+                                    });
+
+                                  //callback wiil be called for those inputs which have error-classes
+                                  if(!(classArray.length === 0) || ref.hasClass(myapp.settings.errorClass.required))
+                                  {
+                                      if(valid && myapp.settings.fieldSuccessCallback) myapp.settings.fieldSuccessCallback(ref);
+                                      if(!valid  && myapp.settings.fieldErrorCallback) myapp.settings.fieldErrorCallback(ref, errType);
+                                  }
+                                  
+                                  return valid; 
+                              }
                               
-                              if(valid && myapp.settings.fieldSuccessCallback) myapp.settings.fieldSuccessCallback(ref);
-                              if(!valid  && myapp.settings.fieldErrorCallback) myapp.settings.fieldErrorCallback(ref, errType);
-                              return valid;
                             };
 
                             myapp.validateForm= function()
                             {
-                              var inputs=myapp.formRef.find('input, textarea, select');
+                              var inputs=myapp.formRef.find('input:not(input[type="button"], input[type="submit"], input[type="reset"], input[type="hidden"]), textarea, select').not('.'+myapp.settings.noValidateClass);
                               var valid=true;
                               $.each(inputs, function(index, elem){
                                   if(!myapp.validateField(elem)) valid=false;     
@@ -717,6 +727,7 @@ function validationFunction(formSelectorString, $){
                               myapp.clientStatus=valid;
                               if(valid && myapp.settings.formSuccessCallback) myapp.settings.formSuccessCallback(myapp.formRef);
                               if(!valid  && myapp.settings.formErrorCallback) myapp.settings.formErrorCallback(myapp.formRef);
+                             
                               return myapp.clientStatus;
                             };
 
@@ -781,7 +792,7 @@ function validationFunction(formSelectorString, $){
                             {
                                 myapp.cstmInputObjArray=[];
 
-                                var inputs=myapp.formRef.find('input:not(input[type="button"], input[type="submit"], input[type="reset"]), textarea, select');
+                                var inputs=myapp.formRef.find('input:not(input[type="button"], input[type="submit"], input[type="reset"], input[type="hidden"]), textarea, select').not('.'+myapp.settings.noValidateClass);
                                
                                 inputs.each(function(i, elm){
                                     var element=$(elm);
@@ -924,6 +935,12 @@ function validationFunction(formSelectorString, $){
                                 myapp.formRef=$(formSelectorString);
                                 if(myapp.formRef){
                                   myapp.constructFieldWiseMsgArray();
+
+                                  //hidding errors of elements with class 'novalidate'
+                                  $(myapp.formRef).find("."+myapp.settings.noValidateClass).each(function(){
+                                    myapp.hideError($(this));
+                                  });
+
                                   if(initialize) 
                                     console.info("ValidationJs Initialized");
                                   else

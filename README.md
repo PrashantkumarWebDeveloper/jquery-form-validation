@@ -71,6 +71,7 @@ After adding library path properly you need to initialize this plugin. For this 
 ```javascript
 var app=validationJs(formSelector);
 ```
+###### Note: You need to initialize plugin for each form in different variable, say "app1" (Abobe Initialization can not be used for different form in the same page).
 
 Here “formSelector” is the css selector for your form. You can use ID, Class or anything according to your convenience.
 
@@ -198,9 +199,85 @@ Now you are all set up and ready to fly!!
 
 
 ### Understanding error classes
-(will be updated soon)
+(Will be updated soon)
+
 ### Plugin Options and Overriding defualt error messages
-(will be updated soon)
+Plugin Option with their default values are shown below. Options can be passed as second argument of "validationJs(selector, option)" function.
+
+```javascript
+{
+                              messaging:true, //whether message is required or not
+                              formErrorClass: 'error',
+                              
+                              dateFormat: 'yyyy/mm/dd',
+                              sevarErrorMsg: "Server validation failed!",
+                              getErrorElement:undefined,  // custom function to get element to show error message for each input
+                              fieldSuccessCallback: undefined, //callback will get refrence of field as first parameter
+                              fieldErrorCallback: undefined,  //callback will get refrence of field as first parameter and error type as second parameter
+                              formSuccessCallback: undefined, //callback will get refrence of form as first parameter
+                              formErrorCallback: undefined,  //callback will get refrence of form as first parameter
+                              noValidateClass: 'novalidate', //app.refresh() call is recomonded while addition/removal of this class
+                              errorClass: {
+                                              //override below classes by passing option(as second parameter in object format) in validationJs() function
+                                              required: "isRequired", 
+                                              phone:  "isPhone",
+                                              integer: "isInteger",
+                                              number: "isNumber",
+                                              decimal: "isDecimal",
+                                              digits: "isDigits",
+                                              email:  "isEmail",
+                                              url: "isUrl",
+                                              date: "isDate", 
+                                              regex:  "isRegex",
+                                              char:  "isChar", 
+                                              length: "isLength",
+                                              alphaNumeric: "isAlphaNumeric"
+                                              
+                                            },
+                              errorMsg: {
+                                            //override error messages by passing in validationJs() option
+                                            required: "This is required field!",
+                                            char: "This field can contain characters only!",
+                                            phone: "Phone Number should be a Number of 10 digits!",
+                                            integer: {
+                                                int_msg: "This field can contain integer only!",
+                                                min_msg: "Value should be greater than: ",
+                                                max_msg: "Value should be less than: ",
+                                                min_max_msg: "Value should be between: "
+                                              },
+                                            number: {
+                                                num_msg: "This field can contain numbers only!",
+                                                min_msg: "Number should be greater than: ",
+                                                max_msg: "Number should be less than: ",
+                                                min_max_msg: "Number should be between: "
+                                              },
+                                            decimal: {
+                                                dec_msg: "This field can contain decimal only!",
+                                                min_msg: "Value should be greater than: ",
+                                                max_msg: "Value should be less than: ",
+                                                min_max_msg: "Value should be between: "
+                                              },
+
+                                            digits: "This field can contain numbers only!",
+                                            date: {
+                                                date_msg: "This field has Invalid Date Format or Value!",
+                                                min_msg: "Date should be less than: ",
+                                                max_msg: "Date should be greater than: ",
+                                                min_max_msg: "Date should be between: "
+                                              },
+                                            email: "Invalid Email Id!",
+                                            url: "Invalid Url!",
+                                            regex: "Field do not match required pattern!",
+                                            length: {
+                                                        min_msg: "Length  should be greater than: ",
+                                                        max_msg: "Length should be less than: ",
+                                                        min_max_msg: "Length should be between: "
+                                                    },
+                                            alphaNumeric: "Only alphanumeric charecters allowed!"
+                                        }
+                          }
+```
+
 ### Refreshing data and bindings
 Some times we need to refresh bindings of elements. Such cases are:
 

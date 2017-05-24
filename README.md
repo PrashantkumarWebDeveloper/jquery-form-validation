@@ -322,7 +322,7 @@ var first_name_msg={
 						"required": "First Name is required!",
                         "char":	"First Name should only contains alphabatical character!"
                    };
-app.addErrorMsg({"#first_name": first_name_msg}); //function can accept single object or array of such objects
+app.addErrorMsg({selector: "#first_name", msg: first_name_msg}); //function can accept single object or array of such objects
 
 ```
 
@@ -358,8 +358,8 @@ var email_msg={
          			"email": "Email is invalid, and this is second custom error message"           
 				};
 app.addErrorMsg([
-					{"#first_name": first_name_msg},
-                    {".cstm-email": email_msg}
+					{selector: "#first_name", msg: first_name_msg},
+                    {selector: ".cstm-email", msg: email_msg}
                     
                 ]); //function can accept single object or array of such objects
 ```

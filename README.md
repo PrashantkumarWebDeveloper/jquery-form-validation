@@ -202,7 +202,7 @@ Now you are all set up and ready to fly!!
 (Will be updated soon)
 
 ### Plugin Options and Overriding defualt error messages
-Plugin Option with their default values are shown below. Options can be passed as second argument of "validationJs(selector, option)" function.
+Plugin Option with their default values are shown below. Options can be passed as second argument of __"validationJs(selector, option)"__ function.
 
 ```javascript
 {

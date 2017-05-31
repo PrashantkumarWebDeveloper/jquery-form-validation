@@ -78,37 +78,37 @@ function validationFunction(formSelectorString, $)
             phone: "Phone Number should be a Number of 10 digits!",
             integer: {
                 int_msg: "This field can contain integer only!",
-                min_msg: "Value should be greater than: ",
-                max_msg: "Value should be less than: ",
-                min_max_msg: "Value should be between: "
+                min_msg: "Minimum value for this field is: ",
+                max_msg: "Maximum value for this field is: ",
+                min_max_msg: "Minimum and Maximum values for this field are: "
               },
             number: {
                 num_msg: "This field can contain numbers only!",
-                min_msg: "Number should be greater than: ",
-                max_msg: "Number should be less than: ",
-                min_max_msg: "Number should be between: "
+                min_msg: "Minimum value for this field is: ",
+                max_msg: "Maximum value for this field is: ",
+                min_max_msg: "Minimum and Maximum values for this field are: "
               },
             decimal: {
                 dec_msg: "This field can contain decimal only!",
-                min_msg: "Value should be greater than: ",
-                max_msg: "Value should be less than: ",
-                min_max_msg: "Value should be between: "
+                min_msg: "Minimum value for this field is: ",
+                max_msg: "Maximum value for this field is: ",
+                min_max_msg: "Minimum and Maximum values for this field are: "
               },
 
             digits: "This field can contain numbers only!",
             date: {
                 date_msg: "This field has Invalid Date Format or Value!",
-                min_msg: "Date should be less than: ",
-                max_msg: "Date should be greater than: ",
-                min_max_msg: "Date should be between: "
+                min_msg: "Minimum date value for this field is: ",
+                max_msg: "Maximum date value for this field is: ",
+                min_max_msg: "Minimum and Maximum date values for this field are: "
               },
             email: "Invalid Email Id!",
             url: "Invalid Url!",
             regex: "Field do not match required pattern!",
             length: {
-                min_msg: "Length  should be greater than: ",
-                max_msg: "Length should be less than: ",
-                min_max_msg: "Length should be between: "
+                min_msg: "Minimum length for this field is: ",
+                max_msg: "Maximum length for this field is: ",
+                min_max_msg: "Minimum and Maximum length for this field are: "
               },
             alphaNumeric: "Only alphanumeric charecters allowed!"
         }

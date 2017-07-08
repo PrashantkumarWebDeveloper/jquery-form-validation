@@ -275,6 +275,10 @@ Plugin Option with their default values are shown below. Options can be passed a
     }
   
   ```
+  __Example:__ 
+```javascript 
+var app = new validationJs(“#myForm”, {messaging:false, formErrorClass: 'custom-error-class'});
+```
 
 ### Refreshing data and bindings
 Some times we need to refresh bindings of elements. Such cases are:

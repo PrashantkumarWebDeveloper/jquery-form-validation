@@ -199,7 +199,100 @@ Now you are all set up and ready to fly!!
 
 
 ### Understanding error classes
-(Will be updated soon)
+This plugin plays on the basis of error classes. Declaring input "type" attribute has no effect. But additional validation attributes like: min, max, pattern will work as usual.
+
+
+- __isRequired__ : Check for required type error. It can be applied to any Input type (Ex: text, number, date, email, select, redio and checkbox).
+```html5
+    <input type="text" class="isRequired"/>
+```
+- __isPhone__ : This class check for Indian standered mobile numbers.
+```html5
+    <input type="text" class="isPhone"/>
+```
+- __isInteger__ This class checks for valid javascript integer values(+/- 9007199254740991). Additionaly min max attributes can be used to validate input.
+```html5
+    <input type="text" class="isInteger"/>
+    <!--or-->
+    <input type="text" class="isInteger" min="10"/>
+    <!--or-->
+    <input type="text" class="isInteger" max="20"/>
+     <!--or-->
+    <input type="text" class="isInteger" min="10" max="20"/>
+```
+- __isNumber__ : This class checks for valid javascript number values. Additionaly min max attributes can be used to validate input.
+```html5
+    <input type="text" class="isNumber"/>
+    <!--or-->
+    <input type="text" class="isNumber" min="10"/>
+    <!--or-->
+    <input type="text" class="isNumber" max="20.5"/>
+     <!--or-->
+    <input type="text" class="isNumber" min="10" max="20.5"/>
+```
+- __isDecimal__ : This class checks for decimal values up to 2 decimal places. Additionaly min max attributes can be used to validate input.
+```html5
+    <input type="text" class="isDecimal"/>
+    <!--or-->
+    <input type="text" class="isDecimal" min="10.20"/>
+    <!--or-->
+    <input type="text" class="isDecimal" max="20.50"/>
+     <!--or-->
+    <input type="text" class="isDecimal" min="10.20" max="20.50"/>
+```
+- __isDigits__ : This class is used in the case where input length is large and Number (Ex: Account Number) and where length of input matters instead of value.
+```html5
+    <input type="text" class="isDigits"/>
+```
+- __isEmail__ : This class checks for valid email format.
+```html5
+    <input type="text" class="isEmail"/>
+```
+- __isUrl__ : This class checks for valid url format.
+```html5
+    <input type="text" class="isUrl"/>
+```
+- __isDate__ : This class checks for date value. Additionaly min max attributes can be used to validate. It works for the input format yyyy/mm/dd, yyyy-mm-dd and yyyy mm dd but the format can be changed by passing format option during initialization. (You will learn latter about passing options). Pass min max attribute in the same formate.
+
+```html5
+    <input type="text" class="isDate"/>
+    <!--or-->
+    <input type="text" class="isDate" min="2017-07-01"/>
+    <!--or-->
+    <input type="text" class="isDate" max="2017-08-01"/>
+     <!--or-->
+    <input type="text" class="isDate" min="2017-07-01" max="2017-08-01"/>
+```
+- __isChar__ : This class check for charecters (a-z, A-Z).
+
+```html5
+	<input type="text" class="isChar"/>
+````
+- __isAlphaNumeric__ : This class check for alphanumeric charecters (a-z, A-Z, 0-9).
+
+```html5
+	<input type="text" class="isAlphaNumeric"/>
+````
+
+- __isLength__ : This class validate input on the basis of its length. Atleast one attribute from min and max is required to work it. __Do not use__ this class in combination with __isInteger, isDecimal__ and __isNumber__ classs, because min max attribute have different meaning with these inputs(They work with input values not with the length). 
+```html5
+	<input type="text" class="isLength"/>
+````
+
+- __isRegex__ : This class uses pattern attribute to validate input. Pass your regular expression in pattern attribute. Following input check for the string having 3 letters.
+```html5
+	<input type="text" class="isRegex" pattern="[A-Za-z]{3}"/>
+````
+
+**Note:** Above classes can be used alone or in combination. For example below code will check for input having maximum length 20 and should contain only alphabetic charecters. 
+```html5
+ 	<input type="text" class="isRequired isChar isLength"  max="20">
+```
+Also __validation plugin validate input sequentially in the order of classes__ (Order for isRequired class doesn't matters, it is alwayas the first validation).
+For example: In the below code first validation is isRequired, second is isChar and third is isLength. It means if you have invalid input, you will get error related to isRequired class first than you will get invalid charecter error and in last you will get length error.
+```html5
+ 	<input type="text" class="isRequired isChar isLength"  max="20">
+```
 
 ### Plugin Options and Overriding defualt error messages
 Plugin Option with their default values are shown below. Options can be passed as second argument of __"validationJs(selector, option)"__ function.

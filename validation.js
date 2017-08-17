@@ -794,7 +794,7 @@ function validationFunction(formSelectorString, $)
                 if(cstmInputObj['errorRef'])
                 {
                     cstmInputObj['errorRef'].text(errorMsg);
-                    cstmInputObj['errorRef'].show();
+                    //cstmInputObj['errorRef'].show();
                 }
                 else
                 {
@@ -827,7 +827,7 @@ function validationFunction(formSelectorString, $)
                 if(cstmInputObj['errorRef'])
                 {
                     cstmInputObj['errorRef'].text('');
-                    cstmInputObj['errorRef'].hide();
+                    //cstmInputObj['errorRef'].hide();
                 }
                 else
                 {
@@ -1103,7 +1103,7 @@ function validationFunction(formSelectorString, $)
         if(myapp.settings.messaging)
         {
             $.each(myapp.cstmInputObjArray, function(i, obj){
-                if(obj.errorRef)   obj.errorRef.text('').hide();
+                if(obj.errorRef)   obj.errorRef.text('');//.hide();
             }); 
         }
 
